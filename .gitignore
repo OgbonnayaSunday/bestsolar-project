@@ -1,0 +1,37 @@
+
+# ===============================
+# 🔒 ENVIRONMENT VARIABLES
+# ===============================
+.env
+.env.local
+.env.production
+.env.development
+yolov8n.pt
+
+
+# ===============================
+# 🐍 BACKEND (FastAPI + Python)
+# ===============================
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===============================
+# 💾 DATABASE & TEMP FILES
+# ===============================
+database.db
+temp_image.jpg
+static/uploads/
+
+# ===============================
+# 🧾 MISC
+# ===============================
+*.log
+
+# ===============================
+# Ignore Google credentials
+# ===============================
+
+Backend/google-credentials.json

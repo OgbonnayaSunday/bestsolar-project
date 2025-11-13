@@ -1,0 +1,14 @@
+<annotation verified="yes">
+	<folder>train</folder>
+	<filename>solar-image20 (1).jpg</filename>
+	<path>C:\Users\OG BEST\Desktop\MY WORK\Solar-Project\Backend\datasets\roofs\images\train\solar-image20 (1).jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>942</width>
+		<height>580</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+</annotation>
