@@ -1,5 +1,12 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pillow
 numpy
+sqlalchemy
+pydantic
 python-multipart
+passlib[bcrypt]
+python-jose
+cloudinary
+urllib3
+pymysql
