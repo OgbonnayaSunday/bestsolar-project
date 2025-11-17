@@ -3,42 +3,31 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, EmailStr
 from database import Base, engine
-from ai_model import analyze_image_light
 from PIL import Image
-from processor import detect_faces
 from email.mime.text import MIMEText
 import smtplib
 import io
-import math
-from dotenv import load_dotenv
 import os
 import sqlite3
 from datetime import datetime
 from reportlab.pdfgen import canvas
+from dotenv import load_dotenv
+from ai_model import analyze_image_light  # <- your AI solar estimate function
+
 load_dotenv()
-
-
-
 
 Base.metadata.create_all(bind=engine)
 
-# ==============================================
-# 🚀 FastAPI App
-# ==============================================
 app = FastAPI()
 
-# Allow frontend connection
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all for development
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ==============================================
-# ⚙️ Setup folders and database
-# ==============================================
 os.makedirs("static/uploads", exist_ok=True)
 
 def init_db():
@@ -63,12 +52,7 @@ def init_db():
 
 init_db()
 
-
-# ==============================================
-# 📬 Contact Form Schema
-# ==============================================
-
-
+# ------------------ Contact Form ------------------
 class ContactForm(BaseModel):
     name: str
     email: EmailStr
@@ -82,9 +66,6 @@ class ContactForm(BaseModel):
 @app.post("/contact")
 async def receive_contact(form: ContactForm):
     try:
-        print("📩 Received contact:", form.dict())
-
-        # Save to database
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         c.execute("""
@@ -99,7 +80,7 @@ async def receive_contact(form: ContactForm):
         conn.commit()
         conn.close()
 
-        # ====== Send Email ======
+        # Send Email
         sender_email = os.getenv("EMAIL_USER")
         sender_pass = os.getenv("EMAIL_PASS")
         receiver_email = os.getenv("RECEIVER_EMAIL", sender_email)
@@ -129,15 +110,12 @@ async def receive_contact(form: ContactForm):
             server.login(sender_email, sender_pass)
             server.send_message(msg)
 
-        print("✅ Email sent successfully!")
         return {"message": "Form submitted, saved, and email sent successfully."}
 
     except Exception as e:
-        print("❌ Email Error:", e)
         return {"message": "Form saved, but email sending failed.", "error": str(e)}
-# ==============================================
-# 🔔 Get Notifications (for admin dashboard)
-# ==============================================
+
+# ------------------ Notifications ------------------
 @app.get("/notifications")
 def get_notifications():
     conn = sqlite3.connect("database.db")
@@ -147,11 +125,7 @@ def get_notifications():
     conn.close()
     return {"notifications": data}
 
-# ==============================================
-# 🖼️ Analyze Image (Stable Version)
-# ==============================================
-# ======= Solar Estimation =======
-
+# ------------------ Estimate Solar ------------------
 @app.post("/estimate-solar/")
 async def estimate_solar(file: UploadFile = File(...)):
     try:
@@ -166,10 +140,7 @@ async def estimate_solar(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-# ==============================================
-# 🧾 Generate PDF Report
-# ==============================================
+# ------------------ Generate PDF ------------------
 @app.get("/generate-pdf")
 def generate_pdf():
     try:
@@ -189,9 +160,7 @@ def generate_pdf():
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
 
-# ==============================================
-# 🏠 Root Route
-# ==============================================
+# ------------------ Root ------------------
 @app.get("/")
 def root():
     return {"message": "✅ BestSolar Backend is running successfully 🚀"}
