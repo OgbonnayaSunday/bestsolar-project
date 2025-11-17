@@ -5,6 +5,7 @@ from pydantic import BaseModel, EmailStr
 from database import Base, engine
 from ai_model import analyze_image_light
 from PIL import Image
+from processor import detect_faces
 from email.mime.text import MIMEText
 import smtplib
 import io
