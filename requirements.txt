@@ -10,3 +10,6 @@ python-jose
 cloudinary
 urllib3
 pymysql
+ultralytics
+
+
