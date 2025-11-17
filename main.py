@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, EmailStr
 from database import Base, engine
-from ultralytics import YOLO
+from ai_model import analyze_image_light
 from PIL import Image
 from email.mime.text import MIMEText
 import smtplib
@@ -15,8 +15,7 @@ import sqlite3
 from datetime import datetime
 from reportlab.pdfgen import canvas
 load_dotenv()
-# from vision_analyzer import analyze_with_google_vision
-from ai_model import analyze_with_yolo
+
 
 
 
@@ -160,11 +159,12 @@ async def estimate_solar(file: UploadFile = File(...)):
         with open(file_path, "wb") as f:
             f.write(contents)
 
-        result = analyze_with_yolo(file_path)
+        result = analyze_image_light(file_path)
         return {"status": "success", "data": result}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # ==============================================
 # 🧾 Generate PDF Report

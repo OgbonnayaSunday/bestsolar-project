@@ -2,6 +2,7 @@ fastapi
 uvicorn[standard]
 pillow
 numpy
+opencv-python
 sqlalchemy
 pydantic
 python-multipart
@@ -10,6 +11,5 @@ python-jose
 cloudinary
 urllib3
 pymysql
-ultralytics
 
 
