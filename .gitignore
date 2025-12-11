@@ -36,4 +36,4 @@ static/uploads/
 
 Backend/google-credentials.json
 
-processor.py
+processor.py"Backend/google-credentials.json" 
